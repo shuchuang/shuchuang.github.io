@@ -1,0 +1,568 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="openvpn," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="openVPN使用google-authenticator动态验证码登陆
+安装openvpn（建议用centos 7 或 ubuntu 14 ）1依赖包：yum install libpng-devel libpng pam-devel pam –y
+1. 安装openVPN参考：http://www.vpnsg.com/faq/56.html
+2. 创建验证文件，加入内容。vim /etc/pa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openVPN使用google-authenticator动态验证码登陆">
+<meta property="og:url" content="http://blog.shuchuang.com/blog/2016/05/03/openVPN使用google-authenticator动态验证码登陆/index.html">
+<meta property="og:site_name" content="数创信息blog">
+<meta property="og:description" content="openVPN使用google-authenticator动态验证码登陆
+安装openvpn（建议用centos 7 或 ubuntu 14 ）1依赖包：yum install libpng-devel libpng pam-devel pam –y
+1. 安装openVPN参考：http://www.vpnsg.com/faq/56.html
+2. 创建验证文件，加入内容。vim /etc/pa">
+<meta property="og:updated_time" content="2016-05-05T01:51:11.395Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="openVPN使用google-authenticator动态验证码登陆">
+<meta name="twitter:description" content="openVPN使用google-authenticator动态验证码登陆
+安装openvpn（建议用centos 7 或 ubuntu 14 ）1依赖包：yum install libpng-devel libpng pam-devel pam –y
+1. 安装openVPN参考：http://www.vpnsg.com/faq/56.html
+2. 创建验证文件，加入内容。vim /etc/pa">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> openVPN使用google-authenticator动态验证码登陆 | 数创信息blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">数创信息blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">数创信息</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                openVPN使用google-authenticator动态验证码登陆
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-03T17:15:22+08:00" content="2016-05-03">
+              2016-05-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="openVPN使用google-authenticator动态验证码登陆"><a href="#openVPN使用google-authenticator动态验证码登陆" class="headerlink" title="openVPN使用google-authenticator动态验证码登陆"></a>openVPN使用google-authenticator动态验证码登陆</h1><hr>
+<h2 id="安装openvpn"><a href="#安装openvpn" class="headerlink" title="安装openvpn"></a>安装openvpn</h2><p>（建议用centos 7 或 ubuntu 14 ）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">依赖包：yum install libpng-devel libpng pam-devel pam –y</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-安装openVPN"><a href="#1-安装openVPN" class="headerlink" title="1. 安装openVPN"></a>1. 安装openVPN</h3><p>参考：<a href="http://www.vpnsg.com/faq/56.html" target="_blank" rel="external">http://www.vpnsg.com/faq/56.html</a></p>
+<h3 id="2-创建验证文件，加入内容。"><a href="#2-创建验证文件，加入内容。" class="headerlink" title="2. 创建验证文件，加入内容。"></a>2. 创建验证文件，加入内容。</h3><p>vim /etc/pam.d/openvpn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so</span><br><span class="line">auth sufficient pam_google_authenticator.so</span><br><span class="line">auth include system-auth</span><br><span class="line">account include system-auth</span><br><span class="line">password include system-auth</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-安装google-authenticator验证服务："><a href="#3-安装google-authenticator验证服务：" class="headerlink" title="3. 安装google-authenticator验证服务："></a>3. 安装google-authenticator验证服务：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget http://fukuchi.org/works/qrencode/qrencode<span class="number">-3.4</span><span class="number">.1</span>.tar.gz</span><br><span class="line">tar -zxf qrencode<span class="number">-3.4</span><span class="number">.1</span>.tar.gz</span><br><span class="line">cd qrencode<span class="number">-3.4</span><span class="number">.1</span></span><br><span class="line">./configure –prefix=/usr &amp;&amp; make &amp;&amp; make install</span><br><span class="line">tar -jxf libpam-google-authenticator<span class="number">-1.0</span>-source.tar.bz2</span><br><span class="line">cd libpam-google-authenticator<span class="number">-1.0</span></span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="4-修改openVPN配置文件"><a href="#4-修改openVPN配置文件" class="headerlink" title="4. 修改openVPN配置文件"></a>4. 修改openVPN配置文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/openvpn/etc/server.conf</span><br><span class="line">plugin /usr/local/openvpn/etc/openvpn-auth-pam.so openvpn</span><br></pre></td></tr></table></figure>
+<h3 id="5-重启openVPN"><a href="#5-重启openVPN" class="headerlink" title="5. 重启openVPN"></a>5. 重启openVPN</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etc/init.d/openvpn restart</span><br></pre></td></tr></table></figure>
+<h3 id="6-添加系统用户，创建动态验证。"><a href="#6-添加系统用户，创建动态验证。" class="headerlink" title="6. 添加系统用户，创建动态验证。"></a>6. 添加系统用户，创建动态验证。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useradd test</span><br><span class="line">su - test</span><br><span class="line">google-authenticator <span class="comment">#都按y即可，需要安装google-authenticator的手机app，扫描二维码获得动态密码。</span></span><br><span class="line">usermod zhaiguosheng -s /sbin/nologin <span class="comment">#用root将用户改为不可登录。</span></span><br></pre></td></tr></table></figure>
+<h3 id="连接openVPN测试，用户是系统用户，密码是动态码"><a href="#连接openVPN测试，用户是系统用户，密码是动态码" class="headerlink" title="连接openVPN测试，用户是系统用户，密码是动态码"></a>连接openVPN测试，用户是系统用户，密码是动态码</h3>
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openvpn/" rel="tag">#openvpn</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/03/欢迎使用 Cmd Markdown 编辑阅读器/" rel="next" title="欢迎使用 Cmd Markdown 编辑阅读器">
+                <i class="fa fa-chevron-left"></i> 欢迎使用 Cmd Markdown 编辑阅读器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="shuchuang" />
+          <p class="site-author-name" itemprop="name">shuchuang</p>
+          <p class="site-description motion-element" itemprop="description">数创信息的博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#openVPN使用google-authenticator动态验证码登陆"><span class="nav-number">1.</span> <span class="nav-text">openVPN使用google-authenticator动态验证码登陆</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装openvpn"><span class="nav-number">1.1.</span> <span class="nav-text">安装openvpn</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装openVPN"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 安装openVPN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建验证文件，加入内容。"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 创建验证文件，加入内容。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-安装google-authenticator验证服务："><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 安装google-authenticator验证服务：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-修改openVPN配置文件"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 修改openVPN配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-重启openVPN"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. 重启openVPN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-添加系统用户，创建动态验证。"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. 添加系统用户，创建动态验证。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接openVPN测试，用户是系统用户，密码是动态码"><span class="nav-number">1.1.7.</span> <span class="nav-text">连接openVPN测试，用户是系统用户，密码是动态码</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shuchuang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
